@@ -6,6 +6,7 @@ provider "proxmox" {
 
 resource "proxmox_virtual_environment_container" "forgejo-container" {
   node_name = var.proxmox_node
+  tags      = ["forgejo", "git", "docker"]
 
   unprivileged = true
   features {

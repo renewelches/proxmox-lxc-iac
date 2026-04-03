@@ -6,6 +6,7 @@ provider "proxmox" {
 
 resource "proxmox_virtual_environment_container" "n8n-container" {
   node_name    = var.proxmox_node
+  tags         = ["n8n", "automation", "docker"]
   unprivileged = true
   features {
     nesting = true

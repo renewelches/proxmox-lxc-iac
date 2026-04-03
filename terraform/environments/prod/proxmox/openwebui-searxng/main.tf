@@ -6,6 +6,7 @@ provider "proxmox" {
 
 resource "proxmox_virtual_environment_container" "open-webui-container" {
   node_name = var.proxmox_nodes.openwebui
+  tags      = ["open-webui", "ai", "docker"]
 
   unprivileged = true
   features {
@@ -55,6 +56,7 @@ resource "proxmox_virtual_environment_container" "open-webui-container" {
 
 resource "proxmox_virtual_environment_container" "searxng-container" {
   node_name = var.proxmox_nodes.searxng
+  tags      = ["searxng", "search", "docker"]
 
   unprivileged = true
   features {

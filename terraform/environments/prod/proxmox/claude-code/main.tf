@@ -6,6 +6,7 @@ provider "proxmox" {
 
 resource "proxmox_virtual_environment_container" "claude-code-container" {
   node_name = var.proxmox_node
+  tags      = ["claude-code", "ai", "docker"]
 
   unprivileged = true
   features {

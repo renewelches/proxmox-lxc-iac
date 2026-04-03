@@ -7,6 +7,7 @@ provider "proxmox" {
 
 resource "proxmox_virtual_environment_container" "prometheus-container" {
   node_name = var.proxmox_nodes.prometheus
+  tags      = ["prometheus", "monitoring", "docker"]
 
   unprivileged = true
   features {
@@ -56,6 +57,7 @@ resource "proxmox_virtual_environment_container" "prometheus-container" {
 
 resource "proxmox_virtual_environment_container" "grafana-container" {
   node_name = var.proxmox_nodes.grafana
+  tags      = ["grafana", "monitoring", "docker"]
 
   unprivileged = true
   features {

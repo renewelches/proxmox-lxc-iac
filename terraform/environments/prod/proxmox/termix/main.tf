@@ -6,6 +6,7 @@ provider "proxmox" {
 
 resource "proxmox_virtual_environment_container" "termix-container" {
   node_name = var.proxmox_node
+  tags      = ["termix", "terminal", "docker"]
 
   unprivileged = true
   features {

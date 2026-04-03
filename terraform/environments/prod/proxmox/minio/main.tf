@@ -6,6 +6,7 @@ provider "proxmox" {
 
 resource "proxmox_virtual_environment_container" "minio-container" {
   node_name = var.proxmox_node
+  tags      = ["minio", "storage", "docker"]
 
   unprivileged = true
   features {
