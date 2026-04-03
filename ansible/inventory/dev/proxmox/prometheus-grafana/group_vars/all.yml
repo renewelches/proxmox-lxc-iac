@@ -1,0 +1,8 @@
+---
+scrape_targets:
+  - ip: "192.168.86.160"
+    label: "open-webui"
+  - ip: "192.168.86.161"
+    label: "searxng"
+  - ip: "192.168.86.165"
+    label: "n8n"
