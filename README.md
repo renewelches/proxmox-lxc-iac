@@ -44,7 +44,28 @@ All stacks need certificates for HTTPS/TLS. If you want to use self signed certi
 
 ## terraform.tfstate Backend
 
-I recommend to use minio as backend for your terraform.tfstate files. Deploy minio first (with local terraform.tfstate backend).
+I recommend to use minio as backend for your terraform.tfstate files. Deploy minio first (with local terraform.tfstate backend). Create your certificates for minio as descibed above and copy them to `ansible/files/minio`.
+
+```bash
+cd terraform/environments/<env>/proxmox/<stack>
+cp terraform.tfvars.example terraform.tfvars   # fill in your values
+```
+
+After filling in your variables run:
+
+```bash
+terraform init
+terraform apply
+```
+
+Check Mino LXC is available in proxmox. Then configure LXC with Ansible:
+
+```bash
+cd ../../../../../ansible/inventory/prod/proxmox
+ansible-playbook -i ansible.cfg ../../../deploy-minio.yml
+```
+
+Verify minio is available under https://<IP>:9001, where <IP> is the IP you entered in your terraform.tfvars
 
 ### 1. Install the MinIO CLI
 
