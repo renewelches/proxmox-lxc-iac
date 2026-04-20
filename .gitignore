@@ -31,8 +31,6 @@ terraform.log
 # Generated files
 **/docker.env.rendered
 
-# Ansible generated inventory
-ansible/inventory/**/inventory.ini
 
 
 # Termix generated JSON import file
