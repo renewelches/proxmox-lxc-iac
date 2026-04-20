@@ -1,0 +1,26 @@
+---
+# Termix-specific variables for JSON import generation
+# These variables are merged with the dynamic inventory from Proxmox
+
+# Default termix name is the Ansible inventory hostname
+termix_name: "{{ inventory_hostname }}"
+
+# Default folder in Termix UI
+termix_folder: "Homelab"
+
+# Authentication type: 'key' or 'password'
+termix_auth_type: "key"
+
+# SSH key path for key authentication (absolute or relative to Termix app)
+termix_key_path: "~/.ssh/id_rsa"
+
+# Default user for SSH connections
+termix_user: "root"
+
+# Tags for organizing hosts in Termix UI
+termix_tags:
+  - "proxmox"
+  - "homelab"
+
+# Enable Docker management in Termix UI
+termix_docker: false

@@ -4,15 +4,15 @@ Ansible deploys Docker containers onto the hosts provisioned by Terraform. All p
 
 ## Playbooks
 
-| Playbook                           | Stack               | Description                           |
-| ---------------------------------- | ------------------- | ------------------------------------- |
-| `deploy-openwebui-searxng.yml`     | openwebui-searxng   | Open WebUI, SearXNG                   |
-| `deploy-prometheus-grafana.yml`    | prometheus-grafana  | Prometheus, Grafana                   |
-| `deploy-claude-code.yml`           | claude-code         | Claude Code CLI, git, tmux            |
-| `deploy-termix.yml`                | termix              | Termix web terminal + guacd (HTTPS)   |
-| `deploy-forgejo.yml`               | forgejo             | Forgejo self-hosted Git (HTTPS + SSH) |
-| `deploy-minio.yml`                 | minio               | MinIO S3-compatible object storage    |
-| `deploy-n8n.yml`                   | n8n                 | n8n workflow automation               |
+| Playbook                        | Stack              | Description                           |
+| ------------------------------- | ------------------ | ------------------------------------- |
+| `deploy-openwebui-searxng.yml`  | openwebui-searxng  | Open WebUI, SearXNG                   |
+| `deploy-prometheus-grafana.yml` | prometheus-grafana | Prometheus, Grafana                   |
+| `deploy-claude-code.yml`        | claude-code        | Claude Code CLI, git, tmux            |
+| `deploy-termix.yml`             | termix             | Termix web terminal + guacd (HTTPS)   |
+| `deploy-forgejo.yml`            | forgejo            | Forgejo self-hosted Git (HTTPS + SSH) |
+| `deploy-minio.yml`              | minio              | MinIO S3-compatible object storage    |
+| `deploy-n8n.yml`                | n8n                | n8n workflow automation               |
 
 Every playbook runs a common preparation play on all hosts that:
 
@@ -51,21 +51,51 @@ inventory/
 
 ## Templates and Files
 
-| Path                                      | Used by                   | Purpose                              |
-| ----------------------------------------- | ------------------------- | ------------------------------------ |
-| `templates/openwebui/docker.env.j2`       | deploy-openwebui-searxng  | Open WebUI env vars (SearXNG URL)    |
-| `templates/prometheus/prometheus.yml.j2`  | deploy-prometheus-grafana | Prometheus scrape config             |
-| `templates/grafana/datasources.yml.j2`    | deploy-prometheus-grafana | Grafana Prometheus datasource        |
-| `files/searxng/settings.yml`              | deploy-openwebui-searxng  | SearXNG search engine config         |
-| `files/termix/termix.crt` + `.key`        | deploy-termix             | TLS cert/key (git-ignored)           |
-| `files/forgejo/forgejo.crt` + `.key`      | deploy-forgejo            | TLS cert/key (git-ignored)           |
+| Path                                    | Used by                   | Purpose                       |
+| --------------------------------------- | ------------------------- | ----------------------------- |
+| `templates/openwebui/docker.env.j2`     | deploy-openwebui-searxng  | Open WebUI env vars           |
+| `templates/prometheus/prometheus.yml.j2`| deploy-prometheus-grafana | Prometheus scrape config      |
+| `templates/grafana/datasources.yml.j2`  | deploy-prometheus-grafana | Grafana Prometheus datasource |
+| `templates/termix/termix-hosts.json.j2` | generate-termix-json.yml  | Termix JSON import template   |
+| `files/searxng/settings.yml`            | deploy-openwebui-searxng  | SearXNG search engine config  |
+| `files/termix/termix.crt` + `.key`      | deploy-termix             | TLS cert/key (git-ignored)    |
+| `files/forgejo/forgejo.crt` + `.key`    | deploy-forgejo            | TLS cert/key (git-ignored)    |
+
+## Termix Dynamic Inventory & JSON Import
+
+Termix hosts can be automatically discovered from Proxmox and bulk-imported via a generated JSON file.
+
+**Setup:**
+
+- `inventory/prod/proxmox/termix/pve.proxmox.yml` — Proxmox dynamic inventory plugin
+- `inventory/prod/proxmox/termix/group_vars/all.yml` — Termix host defaults
+- `inventory/prod/proxmox/termix/host_vars/` — Per-host overrides (optional)
+- `templates/termix/termix-hosts.json.j2` — JSON template
+- `generate-termix-json.yml` — Playbook to render JSON from dynamic inventory
+
+**Quick start:**
+
+```bash
+export PROXMOX_TOKEN_ID=ansible@pam!token
+export PROXMOX_TOKEN_SECRET=<uuid>
+export PROXMOX_URL=https://proxmox.grumples.home:8006
+
+ansible-playbook \
+  -i ansible/inventory/prod/proxmox/termix/pve.proxmox.yml \
+  ansible/generate-termix-json.yml
+```
+
+This generates `inventory/prod/proxmox/termix/termix-hosts.json` for bulk import into the Termix UI.
+
+👉 **See [TERMIX_IMPORT.md](./TERMIX_IMPORT.md)** for full configuration, usage, and troubleshooting.
 
 ## Usage
 
 ```bash
 # Install required collection
 ansible-galaxy collection install community.docker
-
+# only needed if you want to auto populate termix with all our PVE hosts
+ansible-galaxy collection install community.proxmox
 # Run a playbook (prod)
 ansible-playbook -i ansible/inventory/prod/proxmox/<stack>/inventory.ini \
   ansible/deploy-<service>.yml

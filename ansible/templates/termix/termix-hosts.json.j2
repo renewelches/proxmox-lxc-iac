@@ -1,0 +1,51 @@
+{
+  "hosts": [
+{% for host in groups['all'] %}
+{%   set host_vars = hostvars[host] %}
+{%   set proxmox_vmtype_raw = host_vars.get('proxmox_vmtype') %}
+{%   set proxmox_vmtype = proxmox_vmtype_raw.get('__ansible_unsafe', proxmox_vmtype_raw) if proxmox_vmtype_raw is mapping else proxmox_vmtype_raw %}
+{%   if proxmox_vmtype and proxmox_vmtype != 'node' %}
+{%     set host_ip = '' %}
+{%     set proxmox_net0 = host_vars.get('proxmox_net0', {}) %}
+{%     set net0_ip_raw = proxmox_net0.get('ip') %}
+{%     set net0_ip = net0_ip_raw.get('__ansible_unsafe', net0_ip_raw) if net0_ip_raw is mapping else (net0_ip_raw | string if net0_ip_raw else '') %}
+{%     if net0_ip and net0_ip != 'dhcp' and net0_ip | regex_search('[0-9]+\\.[0-9]+') %}
+{%       set host_ip = (net0_ip | regex_replace('/.*', '')) %}
+{%     else %}
+{%       set lxc_interfaces = host_vars.get('proxmox_lxc_interfaces', []) %}
+{%       set valid_ips = [] %}
+{%       for iface in lxc_interfaces %}
+{%         set iface_name_raw = iface.get('name') %}
+{%         set iface_name = iface_name_raw.get('__ansible_unsafe', iface_name_raw) if iface_name_raw is mapping else iface_name_raw %}
+{%         if iface_name and iface_name != 'lo' %}
+{%           set inet_raw = iface.get('inet') %}
+{%           set inet = inet_raw.get('__ansible_unsafe', inet_raw) if inet_raw is mapping else inet_raw %}
+{%           if inet and inet | regex_search('[0-9]+\\.[0-9]+') and not inet | regex_search('^127\\.') %}
+{%             set _ = valid_ips.append(inet | regex_replace('/.*', '')) %}
+{%           endif %}
+{%         endif %}
+{%       endfor %}
+{%       if valid_ips %}
+{%         set host_ip = valid_ips[0] %}
+{%       endif %}
+{%     endif %}
+{%     if not host_ip %}
+{%       set host_ip = host %}
+{%     endif %}
+    {
+      "name": "{{ host_vars.get('termix_name', host) }}",
+      "ip": "{{ host_ip }}",
+      "port": {{ host_vars.get('ansible_port', 22) }},
+      "username": "{{ host_vars.get('termix_user', 'root') }}",
+      "authType": "{{ host_vars.get('termix_auth_type', 'key') }}",
+      "key": "{{ host_vars.get('termix_key_path', '~/.ssh/id_rsa') }}",
+      "folder": "{{ host_vars.get('termix_folder', 'Homelab') }}",
+      "tags": {{ host_vars.get('termix_tags', ['proxmox']) | to_json }},
+      "enableTerminal": true,
+      "enableFileManager": true,
+      "enableDocker": {{ host_vars.get('termix_docker', false) | to_json }}
+    }{{ '' if loop.last else ',' }}
+{%   endif %}
+{% endfor %}
+  ]
+}

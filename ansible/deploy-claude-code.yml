@@ -8,7 +8,7 @@
         update_cache: yes
         upgrade: yes
 
-    - name: Install git, tmux, curl, zsh, nodejs, and npm
+    - name: Install git, tmux, curl, zsh, nodejs, npm, gnupg, and pass
       apt:
         name:
           - git
@@ -31,8 +31,11 @@
       args:
         creates: /usr/local/bin/claude
 
-    - name: Add ~/.local/bin to PATH in .zshrc
-      ansible.builtin.lineinfile:
-        path: /root/.zshrc
-        line: 'export PATH="$HOME/.local/bin:$PATH"'
-        create: yes
+    - name: Configure Claude Code release channel to stable
+      ansible.builtin.copy:
+        dest: /root/.claude/settings.json
+        content: |
+          {
+            "autoUpdatesChannel": "stable"
+          }
+        force: no

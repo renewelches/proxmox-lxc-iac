@@ -1,0 +1,30 @@
+---
+- name: Generate Termix JSON import file from dynamic inventory
+  hosts: localhost
+  gather_facts: no
+  pre_tasks:
+    - name: Refresh inventory to load dynamic groups
+      meta: refresh_inventory
+  tasks:
+    - name: Generate termix-hosts.json from template
+      template:
+        src: templates/termix/termix-hosts.json.j2
+        dest: "{{ playbook_dir }}/inventory/prod/proxmox/termix/termix-hosts.json"
+      vars:
+        # This playbook is meant to be run with -i pointing to the Proxmox inventory
+        # The template will iterate over all hosts in the dynamic inventory
+        ansible_inventory_dir: "{{ lookup('env', 'PWD') }}"
+      register: json_generation
+
+    - name: Display generated JSON file path
+      debug:
+        msg: "Generated Termix JSON import file: {{ playbook_dir }}/inventory/prod/proxmox/termix/termix-hosts.json"
+
+    - name: Show JSON preview (first 30 lines)
+      shell: head -30 "{{ playbook_dir }}/inventory/prod/proxmox/termix/termix-hosts.json"
+      register: json_preview
+      changed_when: false
+
+    - name: Display JSON preview
+      debug:
+        msg: "{{ json_preview.stdout_lines }}"

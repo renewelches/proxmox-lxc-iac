@@ -1,0 +1,68 @@
+---
+# community.proxmox dynamic inventory plugin
+# File MUST end in .proxmox.yml or .proxmox.yaml for the plugin to recognise it.
+#
+# Credentials are read from environment variables automatically:
+#   PROXMOX_URL      e.g. https://proxmox.mylab.home:8006  (no /api2/json suffix)
+#   PROXMOX_USER     e.g. root@pam                            (include the realm)
+#   PROXMOX_PASSWORD your password
+#
+# API token alternative where API token looks like ansible-prov@pve!ansible:
+#   
+#   PROXMOX_URL=https://proxmox.mylab.home:8006  (no /api2/json suffix)
+#   PROXMOX_USER=ansible-prov@pve
+#   PROXMOX_TOKEN_ID=ansible 
+#   PROXMOX_TOKEN_SECRET=the token secret UUID 
+
+plugin: community.proxmox.proxmox
+url: "{{ lookup('env', 'PROXMOX_URL') }}"
+user: "{{ lookup('env', 'PROXMOX_USER') }}"
+token_id: "{{ lookup('env', 'PROXMOX_TOKEN_ID') }}"
+token_secret: "{{ lookup('env', 'PROXMOX_TOKEN_SECRET')}}"
+validate_certs: false
+
+# Exclude the PVE nodes themselves — manage only VMs and LXC containers
+exclude_nodes: false
+
+# Pull running guests only.
+# NOTE: with want_facts=true the variable is proxmox_status (prefixed), not status.
+want_facts: true
+filters:
+  - proxmox_status == "running"
+
+# Group by Proxmox tags, node name, and guest type
+keyed_groups:
+  - key: proxmox_tags_parsed
+    prefix: tag
+    separator: "_"
+  - key: proxmox_node
+    prefix: node
+    separator: "_"
+  - key: proxmox_type
+    prefix: ""
+    separator: ""
+
+# IP resolution priority:
+#   1. QEMU guest agent (most accurate — install qemu-guest-agent on VMs)
+#   2. LXC upid IP addresses (for LXC containers with DHCP)
+#   3. Static IP parsed from the net0 config string (works for non-DHCP LXC/QEMU)
+#   4. Falls back to inventory_hostname — override with host_vars if needed
+compose:
+  ansible_host: >-
+    proxmox_agent_interfaces
+    | default([])
+    | selectattr('ip-addresses', 'defined')
+    | map(attribute='ip-addresses')
+    | flatten
+    | selectattr('ip-address-type', 'equalto', 'ipv4')
+    | map(attribute='ip-address')
+    | reject('match', '^127\.')
+    | list
+    | first
+    | default(
+      (proxmox_net0 | default('') | regex_search('ip=([0-9.]+)', '\\1') | first)
+      or
+      (proxmox_nics | default({}) | dict2items | map(attribute='value') | map(attribute='data') | select('match', '[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+') | first)
+      or
+      inventory_hostname
+    )

@@ -43,6 +43,8 @@ ansible/inventory/**/inventory.ini
 ansible/files/**/*.key
 ansible/files/**/*.crt
 
+# Termix generated JSON import file
+ansible/inventory/**/termix-hosts.json
 # OS
 .DS_Store
 CLAUDE.md
