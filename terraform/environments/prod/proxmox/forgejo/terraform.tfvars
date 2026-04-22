@@ -8,4 +8,5 @@ proxmox_node         = "minis"
 static_ip            = "192.168.86.210"
 enable_replication   = true     # Set to true for multi-node clusters
 replication_target   = "gmktec" # e.g. "pve2"
+forgejo_domain       = "forgejo.grumples.home"
 
