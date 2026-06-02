@@ -1,0 +1,12 @@
+# Copy this file to ansible.cfg and adjust for your environment.
+# ansible.cfg is gitignored because it may contain host-specific values
+# (e.g. a ProxyJump bastion IP for reaching an isolated lab segment).
+#
+# If your Proxmox guests live on a flat/reachable network, you can drop the
+# ProxyJump option entirely:
+#   ssh_args = -o StrictHostKeyChecking=accept-new
+#
+# If the guests sit behind a jump host (e.g. lab VLAN reachable only via a
+# Proxmox node on the home network), route SSH through it:
+[ssh_connection]
+ssh_args = -o StrictHostKeyChecking=accept-new -o ProxyJump=root@JUMP_HOST_IP

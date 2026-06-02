@@ -1,0 +1,5 @@
+# Copy this file to ansible.cfg and adjust for your environment.
+# ansible.cfg is gitignored because it may contain host-specific values
+# (e.g. a ProxyJump bastion IP for reaching an isolated lab segment).
+[ssh_connection]
+ssh_args = -o StrictHostKeyChecking=no
