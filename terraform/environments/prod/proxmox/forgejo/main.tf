@@ -50,6 +50,11 @@ resource "proxmox_virtual_environment_container" "forgejo-container" {
     dedicated = var.memory_dedicated
     swap      = var.memory_swap
   }
+
+  # Holds PBS-restored data (CT 103) — guard against accidental recreate.
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 resource "proxmox_replication" "forgejo" {

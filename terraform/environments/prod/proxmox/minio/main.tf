@@ -50,6 +50,11 @@ resource "proxmox_virtual_environment_container" "minio-container" {
     dedicated = var.memory_dedicated
     swap      = var.memory_swap
   }
+
+  # CRITICAL: holds ALL Terraform states (S3 backend) — never destroy by accident.
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 resource "proxmox_replication" "minio" {

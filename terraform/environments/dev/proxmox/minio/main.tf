@@ -40,6 +40,11 @@ resource "proxmox_virtual_environment_container" "minio-container" {
     dedicated = 512
     swap      = 256
   }
+
+  # Guard against accidental recreate.
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 resource "local_file" "ansible_inventory" {
