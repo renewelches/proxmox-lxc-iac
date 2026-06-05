@@ -43,6 +43,30 @@ variable "file-system" {
   default     = "local-zfs"
 }
 
+variable "openwebui_disk_size" {
+  description = "Disk size in GB for the Open WebUI container"
+  type        = number
+  default     = 10
+}
+
+variable "searxng_disk_size" {
+  description = "Disk size in GB for the SearXNG container"
+  type        = number
+  default     = 8
+}
+
+variable "network_bridge" {
+  description = "Proxmox bridge the container network interfaces attach to. Use vmbr0 for a flat/untagged network, or a dedicated bridge (e.g. vmbr1) for an isolated VLAN/lab segment."
+  type        = string
+  default     = "vmbr0"
+}
+
+variable "network_interface_name" {
+  description = "Name of the container network interface (as seen inside the guest, e.g. eth0)."
+  type        = string
+  default     = "eth0"
+}
+
 variable "ollama_host" {
   description = "Remote Ollama URL (e.g., http://192.168.86.1:11434)"
   type        = string

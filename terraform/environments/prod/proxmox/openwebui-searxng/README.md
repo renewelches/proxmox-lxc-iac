@@ -20,13 +20,29 @@ export TF_VAR_proxmox_host_default_pwd="your-password"
 
 Key variables:
 
-| Variable           | Description                                      |
-| ------------------ | ------------------------------------------------ |
-| `proxmox_nodes`    | Map of node names (`openwebui`, `searxng`)       |
-| `static_ips`       | Map of static IPs (`open_webui`, `searxng`)      |
-| `gateway`          | Default gateway (default `192.168.86.1`)         |
-| `ollama_host`      | URL of your remote Ollama instance               |
-| `template_file_id` | Proxmox LXC template file ID                     |
+| Variable                 | Description                                                      |
+| ------------------------ | --------------------------------------------------------------- |
+| `proxmox_nodes`          | Map of node names (`openwebui`, `searxng`)                      |
+| `static_ips`             | Map of static IPs (`open_webui`, `searxng`)                     |
+| `gateway`                | Default gateway (default `192.168.86.1`)                        |
+| `network_bridge`         | Proxmox bridge for the NICs (default `vmbr0`; `vmbr1` for VLAN) |
+| `network_interface_name` | Guest NIC name (default `eth0`)                                 |
+| `ollama_host`            | URL of your remote Ollama instance                              |
+| `template_file_id`       | Proxmox LXC template file ID                                    |
+
+### Network bridge / VLAN isolation
+
+By default the containers attach to `vmbr0` (flat, untagged network). To place them
+on an isolated VLAN/lab segment, point `network_bridge` at a dedicated bridge:
+
+```hcl
+network_bridge = "vmbr1"   # e.g. an OPNsense LAN / lab bridge
+```
+
+If your isolated segment lives on a single VLAN-aware bridge instead of a dedicated
+one, set `network_bridge = "vmbr0"` and add a VLAN tag in `main.tf`'s
+`network_interface` block (`vlan_id = <id>`). The container's `gateway` must point at
+the router for that segment.
 
 ## Deploy
 

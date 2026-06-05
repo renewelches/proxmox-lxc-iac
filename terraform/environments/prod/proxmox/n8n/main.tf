@@ -38,7 +38,7 @@ resource "proxmox_virtual_environment_container" "n8n-container" {
 
   disk {
     datastore_id = var.file-system
-    size         = 50
+    size         = var.disk_size
   }
 
   cpu {
@@ -46,8 +46,8 @@ resource "proxmox_virtual_environment_container" "n8n-container" {
   }
 
   memory {
-    dedicated = 6144
-    swap      = 3072
+    dedicated = var.memory_dedicated
+    swap      = var.memory_swap
   }
 }
 

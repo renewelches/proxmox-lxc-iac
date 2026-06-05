@@ -30,7 +30,8 @@ resource "proxmox_virtual_environment_container" "open-webui-container" {
   }
 
   network_interface {
-    name = "eth0"
+    name   = var.network_interface_name
+    bridge = var.network_bridge
   }
 
   operating_system {
@@ -40,7 +41,7 @@ resource "proxmox_virtual_environment_container" "open-webui-container" {
 
   disk {
     datastore_id = var.file-system
-    size         = 50
+    size         = var.openwebui_disk_size
   }
 
   cpu {
@@ -48,8 +49,8 @@ resource "proxmox_virtual_environment_container" "open-webui-container" {
   }
 
   memory {
-    dedicated = 1536
-    swap      = 768
+    dedicated = var.openwebui_memory_dedicated
+    swap      = var.openwebui_memory_swap
   }
 
 }
@@ -80,7 +81,8 @@ resource "proxmox_virtual_environment_container" "searxng-container" {
   }
 
   network_interface {
-    name = "eth0"
+    name   = var.network_interface_name
+    bridge = var.network_bridge
   }
 
   operating_system {
@@ -90,7 +92,7 @@ resource "proxmox_virtual_environment_container" "searxng-container" {
 
   disk {
     datastore_id = var.file-system
-    size         = 30
+    size         = var.searxng_disk_size
   }
 
   cpu {
@@ -98,8 +100,8 @@ resource "proxmox_virtual_environment_container" "searxng-container" {
   }
 
   memory {
-    dedicated = 512
-    swap      = 256
+    dedicated = var.searxng_memory_dedicated
+    swap      = var.searxng_memory_swap
   }
 }
 

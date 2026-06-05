@@ -43,6 +43,12 @@ variable "file-system" {
   default     = "local-zfs"
 }
 
+variable "disk_size" {
+  description = "Disk size in GB for the claude-code container"
+  type        = number
+  default     = 8
+}
+
 variable "template_file_id" {
   description = "Proxmox template file ID for LXC containers (e.g., local:vztmpl/debian-13-standard_13.0-1_amd64.tar.zst)"
   type        = string

@@ -15,3 +15,8 @@ static_ips = {
   prometheus = "192.168.1.50",
   grafana    = "192.168.1.51",
 }
+prometheus_memory_dedicated  = 2048
+prometheus_memory_swap       = 1024
+grafana_memory_dedicated     = 1024
+prometheus_disk_size     = 50
+grafana_disk_size        = 25

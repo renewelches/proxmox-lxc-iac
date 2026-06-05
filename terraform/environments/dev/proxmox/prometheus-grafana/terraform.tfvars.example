@@ -13,3 +13,5 @@ static_ips = {
   prometheus = "192.168.86.170",
   grafana    = "192.168.86.171",
 }
+prometheus_disk_size     = 8
+grafana_disk_size        = 8

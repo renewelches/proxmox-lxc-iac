@@ -12,3 +12,4 @@ static_ip                = "192.168.86.164"
 gateway                  = "192.168.86.1"
 minio_root_user          = "minioadmin"
 minio_root_password      = "changeme"
+disk_size                = 10

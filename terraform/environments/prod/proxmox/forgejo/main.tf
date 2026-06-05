@@ -39,7 +39,7 @@ resource "proxmox_virtual_environment_container" "forgejo-container" {
 
   disk {
     datastore_id = var.file-system
-    size         = 50
+    size         = var.disk_size
   }
 
   cpu {
@@ -47,8 +47,8 @@ resource "proxmox_virtual_environment_container" "forgejo-container" {
   }
 
   memory {
-    dedicated = 2048
-    swap      = 1024
+    dedicated = var.memory_dedicated
+    swap      = var.memory_swap
   }
 }
 

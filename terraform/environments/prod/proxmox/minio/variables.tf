@@ -43,6 +43,12 @@ variable "file-system" {
   default     = "local-zfs"
 }
 
+variable "disk_size" {
+  description = "Disk size in GB for the minio container"
+  type        = number
+  default     = 100
+}
+
 variable "template_file_id" {
   description = "The Proxmox template file ID for LXC containers (e.g., pve-cluster:vztmpl/debian13-docker-template.tar.gz)"
   type        = string
@@ -63,6 +69,18 @@ variable "minio_root_password" {
   description = "MinIO root (admin) password"
   type        = string
   sensitive   = true
+}
+
+variable "memory_dedicated" {
+  description = "Dedicated RAM in MB for the MinIO container"
+  type        = number
+  default     = 2048
+}
+
+variable "memory_swap" {
+  description = "Swap in MB for the MinIO container"
+  type        = number
+  default     = 1024
 }
 
 variable "enable_replication" {

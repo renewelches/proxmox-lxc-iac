@@ -43,6 +43,12 @@ variable "file-system" {
   default     = "local-zfs"
 }
 
+variable "disk_size" {
+  description = "Disk size in GB for the claude-code container"
+  type        = number
+  default     = 20
+}
+
 variable "template_file_id" {
   description = "The Proxmox template file ID for LXC containers (e.g., pve-cluster:vztmpl/debian13-docker-template.tar.gz)"
   type        = string
@@ -52,6 +58,18 @@ variable "os_type" {
   description = "The operating system type for LXC containers (e.g., debian, ubuntu, centos)"
   type        = string
   default     = "debian"
+}
+
+variable "memory_dedicated" {
+  description = "Dedicated RAM in MB for the claude-code container"
+  type        = number
+  default     = 3072
+}
+
+variable "memory_swap" {
+  description = "Swap in MB for the claude-code container"
+  type        = number
+  default     = 1024
 }
 
 variable "enable_replication" {

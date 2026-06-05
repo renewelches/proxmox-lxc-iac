@@ -23,7 +23,8 @@ resource "proxmox_virtual_environment_container" "open-webui-container" {
     }
   }
   network_interface {
-    name = "eth0"
+    name   = var.network_interface_name
+    bridge = var.network_bridge
   }
   operating_system {
     template_file_id = var.template_file_id
@@ -31,7 +32,7 @@ resource "proxmox_virtual_environment_container" "open-webui-container" {
   }
   disk {
     datastore_id = var.file-system
-    size         = 10
+    size         = var.openwebui_disk_size
   }
   cpu {
     cores = 1
@@ -61,7 +62,8 @@ resource "proxmox_virtual_environment_container" "searxng-container" {
     }
   }
   network_interface {
-    name = "eth0"
+    name   = var.network_interface_name
+    bridge = var.network_bridge
   }
   operating_system {
     template_file_id = var.template_file_id
@@ -69,7 +71,7 @@ resource "proxmox_virtual_environment_container" "searxng-container" {
   }
   disk {
     datastore_id = var.file-system
-    size         = 8
+    size         = var.searxng_disk_size
   }
   cpu {
     cores = 1

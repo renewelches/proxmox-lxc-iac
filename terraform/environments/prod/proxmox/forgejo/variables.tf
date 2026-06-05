@@ -43,6 +43,12 @@ variable "file-system" {
   default     = "local-zfs"
 }
 
+variable "disk_size" {
+  description = "Disk size in GB for the forgejo container"
+  type        = number
+  default     = 50
+}
+
 variable "template_file_id" {
   description = "The Proxmox template file ID for LXC containers (e.g., pve-cluster:vztmpl/debian13-docker-template.tar.gz)"
   type        = string
@@ -57,6 +63,18 @@ variable "os_type" {
 variable "forgejo_domain" {
   description = "The domain name for the Forgejo instance (e.g., forgejo.example.com)"
   type        = string
+}
+
+variable "memory_dedicated" {
+  description = "Dedicated RAM in MB for the Forgejo container"
+  type        = number
+  default     = 2048
+}
+
+variable "memory_swap" {
+  description = "Swap in MB for the Forgejo container"
+  type        = number
+  default     = 1024
 }
 
 variable "enable_replication" {

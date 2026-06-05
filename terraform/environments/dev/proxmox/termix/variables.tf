@@ -43,6 +43,12 @@ variable "file-system" {
   default     = "local-zfs"
 }
 
+variable "disk_size" {
+  description = "Disk size in GB for the termix container"
+  type        = number
+  default     = 8
+}
+
 variable "template_file_id" {
   description = "Proxmox template file ID for LXC containers"
   type        = string

@@ -31,7 +31,7 @@ resource "proxmox_virtual_environment_container" "prometheus-container" {
   }
   disk {
     datastore_id = var.file-system
-    size         = 8
+    size         = var.prometheus_disk_size
   }
   cpu {
     cores = 1
@@ -69,7 +69,7 @@ resource "proxmox_virtual_environment_container" "grafana-container" {
   }
   disk {
     datastore_id = var.file-system
-    size         = 8
+    size         = var.grafana_disk_size
   }
   cpu {
     cores = 1

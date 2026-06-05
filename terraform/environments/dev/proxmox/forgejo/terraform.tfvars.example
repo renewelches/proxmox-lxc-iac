@@ -11,3 +11,4 @@ template_file_id         = "pve-cluster:vztmpl/debian13-docker-template.tar.gz"
 static_ip                = "192.168.86.163"
 gateway                  = "192.168.86.1"
 forgejo_domain           = "forgejo-dev.example.com"
+disk_size                = 8

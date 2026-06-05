@@ -41,7 +41,7 @@ resource "proxmox_virtual_environment_container" "prometheus-container" {
 
   disk {
     datastore_id = var.file-system
-    size         = 50
+    size         = var.prometheus_disk_size
   }
 
   cpu {
@@ -49,8 +49,8 @@ resource "proxmox_virtual_environment_container" "prometheus-container" {
   }
 
   memory {
-    dedicated = 2048
-    swap      = 1024
+    dedicated = var.prometheus_memory_dedicated
+    swap      = var.prometheus_memory_swap
   }
 
 }
@@ -91,7 +91,7 @@ resource "proxmox_virtual_environment_container" "grafana-container" {
 
   disk {
     datastore_id = var.file-system
-    size         = 25
+    size         = var.grafana_disk_size
   }
 
   cpu {
@@ -99,7 +99,7 @@ resource "proxmox_virtual_environment_container" "grafana-container" {
   }
 
   memory {
-    dedicated = 1024
+    dedicated = var.grafana_memory_dedicated
   }
 }
 

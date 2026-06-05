@@ -44,9 +44,39 @@ variable "file-system" {
   default     = "local-zfs"
 }
 
+variable "prometheus_disk_size" {
+  description = "Disk size in GB for the Prometheus container"
+  type        = number
+  default     = 50
+}
+
+variable "grafana_disk_size" {
+  description = "Disk size in GB for the Grafana container"
+  type        = number
+  default     = 25
+}
+
 variable "template_file_id" {
   description = "The Proxmox template file ID for LXC containers (e.g., pve-cluster:vztmpl/debian13-docker-template.tar.gz)"
   type        = string
+}
+
+variable "prometheus_memory_dedicated" {
+  description = "Dedicated RAM in MB for the Prometheus container"
+  type        = number
+  default     = 2048
+}
+
+variable "prometheus_memory_swap" {
+  description = "Swap in MB for the Prometheus container"
+  type        = number
+  default     = 1024
+}
+
+variable "grafana_memory_dedicated" {
+  description = "Dedicated RAM in MB for the Grafana container"
+  type        = number
+  default     = 1024
 }
 
 variable "os_type" {

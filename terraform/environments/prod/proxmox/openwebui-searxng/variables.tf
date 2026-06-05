@@ -43,6 +43,30 @@ variable "file-system" {
   type        = string
   default     = "local-zfs"
 }
+
+variable "openwebui_disk_size" {
+  description = "Disk size in GB for the Open WebUI container"
+  type        = number
+  default     = 50
+}
+
+variable "searxng_disk_size" {
+  description = "Disk size in GB for the SearXNG container"
+  type        = number
+  default     = 30
+}
+
+variable "network_bridge" {
+  description = "Proxmox bridge the container network interfaces attach to. Use vmbr0 for a flat/untagged network, or a dedicated bridge (e.g. vmbr1) for an isolated VLAN/lab segment."
+  type        = string
+  default     = "vmbr0"
+}
+
+variable "network_interface_name" {
+  description = "Name of the container network interface (as seen inside the guest, e.g. eth0)."
+  type        = string
+  default     = "eth0"
+}
 variable "ollama_host" {
   description = "The remote URL of ollama. Ollama must run with 'Expose Ollam to the network' setting."
   type        = string
@@ -57,6 +81,30 @@ variable "os_type" {
   description = "The operating system type for LXC containers (e.g., debian, ubuntu, centos)"
   type        = string
   default     = "debian"
+}
+
+variable "openwebui_memory_dedicated" {
+  description = "Dedicated RAM in MB for the Open WebUI container"
+  type        = number
+  default     = 1536
+}
+
+variable "openwebui_memory_swap" {
+  description = "Swap in MB for the Open WebUI container"
+  type        = number
+  default     = 768
+}
+
+variable "searxng_memory_dedicated" {
+  description = "Dedicated RAM in MB for the SearXNG container"
+  type        = number
+  default     = 512
+}
+
+variable "searxng_memory_swap" {
+  description = "Swap in MB for the SearXNG container"
+  type        = number
+  default     = 256
 }
 
 variable "enable_replication" {

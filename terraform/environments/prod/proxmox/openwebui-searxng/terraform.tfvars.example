@@ -16,5 +16,15 @@ static_ips = {
   searxng    = "192.168.1.30",
   open_webui = "192.168.1.40",
 }
-enable_replication = false  # Set to true for multi-node clusters
-replication_target = ""     # e.g. "pve2"
+# Optional: Proxmox bridge for the container NICs.
+# Defaults to "vmbr0" (flat network). Override for an isolated VLAN/lab bridge, e.g. "vmbr1".
+# network_bridge         = "vmbr0"
+# network_interface_name = "eth0"   # guest NIC name, defaults to eth0
+enable_replication           = false  # Set to true for multi-node clusters
+replication_target           = ""     # e.g. "pve2"
+openwebui_memory_dedicated   = 1536
+openwebui_memory_swap        = 768
+searxng_memory_dedicated     = 512
+searxng_memory_swap          = 256
+openwebui_disk_size      = 50
+searxng_disk_size        = 30

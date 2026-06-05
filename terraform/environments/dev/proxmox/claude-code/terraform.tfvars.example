@@ -10,3 +10,4 @@ proxmox_host_default_pwd = "changeme"
 template_file_id         = "pve-cluster:vztmpl/debian13-docker-template.tar.gz"
 static_ip                = "192.168.86.160"
 gateway                  = "192.168.86.1"
+disk_size                = 8

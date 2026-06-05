@@ -43,6 +43,18 @@ variable "file-system" {
   default     = "local-zfs"
 }
 
+variable "prometheus_disk_size" {
+  description = "Disk size in GB for the Prometheus container"
+  type        = number
+  default     = 8
+}
+
+variable "grafana_disk_size" {
+  description = "Disk size in GB for the Grafana container"
+  type        = number
+  default     = 8
+}
+
 variable "template_file_id" {
   description = "Proxmox template file ID for LXC containers"
   type        = string

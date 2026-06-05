@@ -31,7 +31,7 @@ resource "proxmox_virtual_environment_container" "n8n-container" {
   }
   disk {
     datastore_id = var.file-system
-    size         = 8
+    size         = var.disk_size
   }
   cpu {
     cores = 1

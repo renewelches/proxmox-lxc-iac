@@ -12,3 +12,6 @@ static_ip                = "192.168.1.80"
 forgejo_domain           = "forgejo.example.com"
 enable_replication       = false  # Set to true for multi-node clusters
 replication_target       = ""     # e.g. "pve2"
+memory_dedicated         = 2048
+memory_swap              = 1024
+disk_size                = 50

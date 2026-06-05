@@ -14,3 +14,9 @@ static_ips = {
   open_webui = "192.168.86.172",
   searxng    = "192.168.86.173",
 }
+# Optional: Proxmox bridge for the container NICs.
+# Defaults to "vmbr0" (flat network). Override for an isolated VLAN/lab bridge, e.g. "vmbr1".
+# network_bridge         = "vmbr0"
+# network_interface_name = "eth0"   # guest NIC name, defaults to eth0
+openwebui_disk_size      = 10
+searxng_disk_size        = 8
