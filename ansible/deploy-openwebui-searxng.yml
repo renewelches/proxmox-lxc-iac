@@ -54,7 +54,8 @@
           host.docker.internal: host-gateway
         env:
           OLLAMA_BASE_URL: "{{ ollama_host }}"
-          #Tell Python's HTTP libraries where to find the CA bundle 
+          TZ: "America/New_York"
+          #Tell Python's HTTP libraries where to find the CA bundle
           # to verify SSL certificates:
           SSL_CERT_FILE: /etc/ssl/certs/ca-certificates.crt
           REQUESTS_CA_BUNDLE: /etc/ssl/certs/ca-certificates.crt

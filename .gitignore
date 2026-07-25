@@ -50,3 +50,6 @@ ansible/inventory/**/termix-hosts.json
 # OS
 .DS_Store
 CLAUDE.md
+
+# MCP server config (may contain API tokens/secrets)
+.mcp.json
