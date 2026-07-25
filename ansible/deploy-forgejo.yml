@@ -13,25 +13,25 @@
       file:
         path: /etc/forgejo/certs
         state: directory
-        mode: '0755'
-        owner: '1000'
-        group: '1000'
+        mode: "0755"
+        owner: "1000"
+        group: "1000"
 
     - name: Copy TLS certificate
       copy:
         src: forgejo/forgejo.crt
         dest: /etc/forgejo/certs/forgejo.crt
-        mode: '0644'
-        owner: '1000'
-        group: '1000'
+        mode: "0644"
+        owner: "1000"
+        group: "1000"
 
     - name: Copy TLS private key
       copy:
         src: forgejo/forgejo.key
         dest: /etc/forgejo/certs/forgejo.key
-        mode: '0600'
-        owner: '1000'
-        group: '1000'
+        mode: "0600"
+        owner: "1000"
+        group: "1000"
 
     - name: Create Forgejo data volume
       community.docker.docker_volume:
@@ -40,7 +40,7 @@
     - name: Run Forgejo container
       community.docker.docker_container:
         name: forgejo
-        image: codeberg.org/forgejo/forgejo:15
+        image: codeberg.org/forgejo/forgejo:16
         state: started
         pull: always
         restart_policy: unless-stopped
