@@ -123,6 +123,7 @@
         name: searxng
         image: ghcr.io/searxng/searxng:latest
         state: started
+        pull: always
         restart_policy: unless-stopped
         dns_servers:
           - 9.9.9.9
