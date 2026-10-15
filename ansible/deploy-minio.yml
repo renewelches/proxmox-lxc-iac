@@ -34,7 +34,7 @@
     - name: Run MinIO container
       community.docker.docker_container:
         name: minio
-        image: minio/minio:latest
+        image: quay.io/minio/minio:latest
         state: started
         pull: always
         restart_policy: unless-stopped
