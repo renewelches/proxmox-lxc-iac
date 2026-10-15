@@ -34,11 +34,14 @@
     - name: Run MinIO container
       community.docker.docker_container:
         name: minio
-        image: quay.io/minio/minio:latest
+        image: cgr.dev/chainguard/minio:latest
         state: started
         pull: always
         restart_policy: unless-stopped
-        command: server /data --console-address ":9001"
+        # Chainguard image defaults to non-root; run as root so the existing
+        # root-owned minio_data volume and 0600 private key stay readable.
+        user: "0"
+        command: server /data --certs-dir /certs --console-address ":9001"
         ports:
           - "9000:9000"
           - "9001:9001"
@@ -47,4 +50,4 @@
           MINIO_ROOT_PASSWORD: "{{ minio_root_password }}"
         volumes:
           - minio_data:/data
-          - /etc/minio/certs:/root/.minio/certs:ro
+          - /etc/minio/certs:/certs:ro
